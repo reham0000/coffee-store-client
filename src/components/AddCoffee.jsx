@@ -1,159 +1,118 @@
-import Swal from "sweetalert2";
+import React from 'react';
+import Swal from 'sweetalert2'
 
 const AddCoffee = () => {
-  const handleAddCoffee = (event) => {
-    event.preventDefault();
 
-    const form = event.target;
+    const handleAddCoffee = e => {
+        e.preventDefault();
 
-    const name = form.name.value;
-    const quantity = form.quantity.value;
-    const supplier = form.supplier.value;
-    const taste = form.taste.value;
-    const category = form.category.value;
-    const details = form.details.value;
-    const photo = form.photo.value;
-    const newCoffee = {
-      name,
-      quantity,
-      supplier,
-      taste,
-      category,
-      details,
-      photo,
-    };
-    console.log(newCoffee);
+        const name = e.target.name.value;
+        const chef = e.target.chef.value;
+        const supplier = e.target.supplier.value;
+        const taste = e.target.taste.value;
+        const category = e.target.category.value;
+        const details = e.target.details.value;
+        const photo = e.target.photo.value;
 
-    fetch("http://localhost:5000/coffee", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(newCoffee),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.insertedId) {
-          Swal.fire({
-            title: "success!",
-            text: "Coffee Added Successfully",
-            icon: "success",
-            confirmButtonText: "Cool",
-          });
-          form.reset();
-        }
-      });
-  };
+        const newCoffee = { name, chef, supplier, taste, category, details, photo }
+        console.log(newCoffee)
 
-  return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-2xl">
-        <h1 className="text-2xl font-bold text-center mb-6">Add New Coffee</h1>
-        <p className="text-gray-500 text-center mb-6">
-          It is a long established fact that a reader will be distracted by the
-          readable content of a page when looking at its layout.
-        </p>
-        <form onSubmit={handleAddCoffee}>
-          <div className="grid grid-cols-2 gap-4">
-            {/* Name */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Name
-              </label>
-              <input
-                name="name"
-                type="text"
-                placeholder="Enter coffee name"
-                className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring focus:ring-gray-300"
-              />
+        // send data to the server and database
+        fetch('https://v1-coffee-store-server-rho.vercel.appcoffee', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(newCoffee)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.insertedId) {
+                    console.log('successfully added');
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Coffee added successfully',
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    });
+                    e.target.reset();
+                }
+            })
+
+    }
+
+    return (
+        <div className='lg:w-3/4 mx-auto'>
+            <div className="text-center p-10">
+                <h1 className="text-5xl font-bold">Add Coffee!</h1>
+                <p className="py-6">
+                    Provident cupiditate voluptatem et in.Quaerat fugiat ut assumenda excepturi exercitationem
+                    quasi. In deleniti eaque aut repudiandae et a id nisi.
+                </p>
             </div>
-            {/* Chef */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Available Quantity
-              </label>
-              <input
-                name="quantity"
-                type="text"
-                placeholder="Available Quantity"
-                className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring focus:ring-gray-300"
-              />
+            <div className="card bg-base-100 w-full shrink-0 shadow-2xl">
+                <form onSubmit={handleAddCoffee} className="card-body">
+                    {/* form first row */}
+                    <div className='flex flex-col lg:flex-row gap-5'>
+                        <div className="form-control flex-1">
+                            <label className="label">
+                                <span className="label-text">Name</span>
+                            </label>
+                            <input type="text" name='name' placeholder="coffee name" className="input input-bordered" required />
+                        </div>
+                        <div className="form-control flex-1">
+                            <label className="label">
+                                <span className="label-text">Chef</span>
+                            </label>
+                            <input type="text" name='chef' placeholder="chef name" className="input input-bordered" required />
+                        </div>
+                    </div>
+                    {/* form second row */}
+                    <div className='flex flex-col lg:flex-row gap-5'>
+                        <div className="form-control flex-1">
+                            <label className="label">
+                                <span className="label-text">Supplier</span>
+                            </label>
+                            <input type="text" name='supplier' placeholder="coffee supplier" className="input input-bordered" required />
+                        </div>
+                        <div className="form-control flex-1">
+                            <label className="label">
+                                <span className="label-text">Taste</span>
+                            </label>
+                            <input type="text" name='taste' placeholder="taste name" className="input input-bordered" required />
+                        </div>
+                    </div>
+                    {/* form third row */}
+                    <div className='flex flex-col lg:flex-row gap-5'>
+                        <div className="form-control flex-1">
+                            <label className="label">
+                                <span className="label-text">Category</span>
+                            </label>
+                            <input type="text" name='category' placeholder="coffee Category" className="input input-bordered" required />
+                        </div>
+                        <div className="form-control flex-1">
+                            <label className="label">
+                                <span className="label-text">Details</span>
+                            </label>
+                            <input type="text" name='details' placeholder="Coffee Details" className="input input-bordered" required />
+                        </div>
+                    </div>
+
+
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text">Photo URL</span>
+                        </label>
+                        <input type="text" name='photo' placeholder="Photo url" className="input input-bordered" required />
+
+                    </div>
+                    <div className="form-control mt-6">
+                        <button className="btn btn-primary">Add Coffee</button>
+                    </div>
+                </form>
             </div>
-            {/* Supplier */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Supplier
-              </label>
-              <input
-                name="supplier"
-                type="text"
-                placeholder="Enter coffee supplier"
-                className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring focus:ring-gray-300"
-              />
-            </div>
-            {/* Taste */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Taste
-              </label>
-              <input
-                name="taste"
-                type="text"
-                placeholder="Enter coffee taste"
-                className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring focus:ring-gray-300"
-              />
-            </div>
-            {/* Category */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Category
-              </label>
-              <input
-                name="category"
-                type="text"
-                placeholder="Enter coffee category"
-                className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring focus:ring-gray-300"
-              />
-            </div>
-            {/* Details */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Details
-              </label>
-              <input
-                name="details"
-                type="text"
-                placeholder="Enter coffee details"
-                className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring focus:ring-gray-300"
-              />
-            </div>
-            {/* Photo */}
-            <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Photo
-              </label>
-              <input
-                name="photo"
-                type="text"
-                placeholder="Enter photo URL"
-                className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring focus:ring-gray-300"
-              />
-            </div>
-          </div>
-          {/* Submit Button */}
-          <div className="mt-6">
-            <button
-              type="submit"
-              className="w-full py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition"
-            >
-              Add Coffee
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default AddCoffee;
